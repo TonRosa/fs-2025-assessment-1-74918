@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.AddDependencies();
 
 var app = builder.Build();
@@ -29,6 +30,7 @@ app.AddWeatherEndPoints();
 app.AddRootEndPoints();
 app.AddBookEndPoints();
 app.AddCourseEndPoints();
+app.AddBikeEndPoints();
 
 app.Run();
 

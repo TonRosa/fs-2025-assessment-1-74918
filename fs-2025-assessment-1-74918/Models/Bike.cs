@@ -1,6 +1,6 @@
-﻿namespace fs_2025_a_api_demo_002.Data
+﻿namespace fs_2025_a_api_demo_002.Models
 {
-    public class BikeStation
+    public class Bike
     {
         public int number { get; set; }
         public string contract_name { get; set; }
@@ -22,8 +22,4 @@
         public float lat { get; set; }
         public float lng { get; set; }
     }
-
-
 }
-
-

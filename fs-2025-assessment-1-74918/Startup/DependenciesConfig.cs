@@ -7,6 +7,8 @@ namespace fs_2025_a_api_demo_002.Startup
         public static void AddDependencies(this WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<CourseData>();
+            builder.Services.AddTransient<BikeData>();
+            builder.Services.AddTransient<BookData>();
             builder.Services.AddMemoryCache();
         }
     }
