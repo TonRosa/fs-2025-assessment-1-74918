@@ -1,6 +1,25 @@
 @fs_2025_a_api_demo_002_HostAddress = http://localhost:5083
 
-GET {{fs_2025_a_api_demo_002_HostAddress}}/weatherforecast/
+
+GET {{fs_2025_a_api_demo_002_HostAddress}}/bikes
+Accept: application/json
+
+###
+
+### List bikes (filter example)
+GET {{fs_2025_a_api_demo_002_HostAddress}}/bikes?status=OPEN&available=true
+Accept: application/json
+
+###
+
+### Get bike by number (replace 123 with a valid station number)
+GET {{fs_2025_a_api_demo_002_HostAddress}}/bikes/123
+Accept: application/json
+
+###
+
+### API v1 (all bikes)
+GET {{fs_2025_a_api_demo_002_HostAddress}}/api/v1/bikes
 Accept: application/json
 
 ###

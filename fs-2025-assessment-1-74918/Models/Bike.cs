@@ -1,25 +1,78 @@
-﻿namespace fs_2025_a_api_demo_002.Models
+﻿using System.Text.Json.Serialization;
+
+namespace fs_2025_a_api_demo_002.Models
 {
+    //public class Bike
+    //{
+    //    public int number { get; set; }
+    //    public string contract_name { get; set; }
+    //    public string name { get; set; }
+    //    public string address { get; set; }
+    //    public Position position { get; set; }
+    //    public bool banking { get; set; }
+    //    public bool bonus { get; set; }
+    //    public int bike_stands { get; set; }
+    //    public int available_bike_stands { get; set; }
+    //    public int available_bikes { get; set; }
+    //    public string status { get; set; }
+    //    public long last_update { get; set; }
+    //    public string id { get; set; }
+    //}
+
+    //public class Position
+    //{
+    //    public float lat { get; set; }
+    //    public float lng { get; set; }
+    //}
+
     public class Bike
     {
-        public int number { get; set; }
-        public string contract_name { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public Position position { get; set; }
-        public bool banking { get; set; }
-        public bool bonus { get; set; }
-        public int bike_stands { get; set; }
-        public int available_bike_stands { get; set; }
-        public int available_bikes { get; set; }
-        public string status { get; set; }
-        public long last_update { get; set; }
-        public string id { get; set; }
+        [JsonPropertyName("number")]
+        public int Number { get; set; }
+
+        [JsonPropertyName("contract_name")]
+        public string ContractName { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("address")]
+        public string Address { get; set; }
+
+        [JsonPropertyName("position")]
+        public Position Position { get; set; }
+
+        [JsonPropertyName("banking")]
+        public bool Banking { get; set; }
+
+        [JsonPropertyName("bonus")]
+        public bool Bonus { get; set; }
+
+        [JsonPropertyName("bike_stands")]
+        public int BikeStands { get; set; }
+
+        [JsonPropertyName("available_bike_stands")]
+        public int AvailableBikeStands { get; set; }
+
+        [JsonPropertyName("available_bikes")]
+        public int AvailableBikes { get; set; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+
+        [JsonPropertyName("last_update")]
+        public long LastUpdate { get; set; }
+
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
     }
 
     public class Position
     {
-        public float lat { get; set; }
-        public float lng { get; set; }
+        [JsonPropertyName("lat")]
+        public float Lat { get; set; }
+
+        [JsonPropertyName("lng")]
+        public float Lng { get; set; }
     }
 }
