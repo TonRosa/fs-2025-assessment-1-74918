@@ -53,7 +53,7 @@ app.MapControllers();
 
 
 
-app.AddRootEndPoints();
+//app.AddRootEndPoints();
 app.AddBikeEndPoints();
 
 app.Run();
