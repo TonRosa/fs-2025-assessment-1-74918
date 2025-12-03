@@ -14,7 +14,7 @@ namespace Api.Controllers
         protected readonly JsonDataService _data;
         protected readonly IMemoryCache _cache;
 
-        protected StationsController(JsonDataService data, IMemoryCache cache)
+        public StationsController(JsonDataService data, IMemoryCache cache)
         {
             _data = data;
             _cache = cache;
