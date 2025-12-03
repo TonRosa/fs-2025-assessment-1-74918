@@ -9,13 +9,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/stations")]
-    public class StationsController : ControllerBase
+    [Route("api/V2/stations")]
+    public class StationsControllerV2 : ControllerBase
     {
-        protected readonly JsonDataService _data;
+        protected readonly CosmosDataService _data;
         protected readonly IMemoryCache _cache;
 
-        public StationsController(JsonDataService data, IMemoryCache cache)
+        public StationsControllerV2(CosmosDataService data, IMemoryCache cache)
         {
             _data = data;
             _cache = cache;
@@ -71,15 +71,15 @@ namespace Api.Controllers
         {
             var station = await _data.GetStationAsync(number);
 
-                        return Ok(station);
+            return Ok(station);
         }
-     
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Station station)
         {
-                    var newStation = await _data.AddStationAsync(station);
+            var newStation = await _data.AddStationAsync(station);
 
-            return  Ok(newStation);
+            return Ok(newStation);
 
         }
         [HttpPut("{number}")]

@@ -23,7 +23,7 @@ namespace fs_2025_a_api_demo_002.Startup
             {
                 var client = new CosmosClient(endpoint, key);
                 builder.Services.AddSingleton(client);
-                builder.Services.AddSingleton<CosmosBikeRepository>();
+               builder.Services.AddSingleton<CosmosBikeRepository>();
             }
 
             // Background updater that mutates the JSON dataset periodically

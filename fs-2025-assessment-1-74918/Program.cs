@@ -12,20 +12,6 @@ builder.Services.AddControllers();
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//    (c =>
-//{
-//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API V1", Version = "v1" });
-//    c.SwaggerDoc("v2", new OpenApiInfo { Title = "API V2", Version = "v2" });
-
-//    // Resolve conflicts by selecting the first action
-//    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-//});
-//builder.Services.AddApiVersioning(opt =>
-//{
-//    opt.AssumeDefaultVersionWhenUnspecified = true;
-//    opt.DefaultApiVersion = new ApiVersion(1, 0);
-//    opt.ReportApiVersions = true;
-//});
 
 
 builder.Services.AddSingleton<JsonDataService>();
@@ -43,11 +29,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //    (c =>
-    //{
-    //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-    //    c.SwaggerEndpoint("/swagger/v2/swagger.json", "API V2");
-    //});
+   
 }
 
 
@@ -55,10 +37,6 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
-
-
-//app.AddRootEndPoints();
-//app.AddBikeEndPoints();
 
 app.Run();
 
