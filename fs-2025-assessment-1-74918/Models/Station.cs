@@ -41,11 +41,11 @@ namespace fs_2025_a_api_demo_002.Models
         [JsonPropertyName("last_update")]
         public long LastUpdateEpochMs { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public DateTimeOffset LastUpdateUtc
             => DateTimeOffset.FromUnixTimeMilliseconds(LastUpdateEpochMs);
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public DateTimeOffset LastUpdateLocal
         {
             get
@@ -63,7 +63,7 @@ namespace fs_2025_a_api_demo_002.Models
             }
         }
 
-        [JsonIgnore]
+      
         public double Occupancy
         {
             get => BikeStands > 0 ? (double)AvailableBikes / BikeStands : 0.0;
