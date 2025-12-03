@@ -1,18 +1,20 @@
-﻿using fs_2025_a_api_demo_002.Services;
+﻿using fs_2025_a_api_demo_002.Data;
+using fs_2025_a_api_demo_002.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
-namespace fs_2025_a_api_demo_002.Controllers
+namespace Api.Controllers
 {
-    [Route("api/v{version:apiVersion}/stations")]
-    //[Route("api/[controller]")]
-    public abstract class StationsControllerBase : ControllerBase
+    [ApiController]
+    [Route("api/stations")]
+    public class StationsController : ControllerBase
     {
-        protected readonly IDataService _data;
+        protected readonly JsonDataService _data;
         protected readonly IMemoryCache _cache;
 
-        protected StationsControllerBase(IDataService data, IMemoryCache cache)
+        protected StationsController(JsonDataService data, IMemoryCache cache)
         {
             _data = data;
             _cache = cache;
@@ -61,6 +63,16 @@ namespace fs_2025_a_api_demo_002.Controllers
             };
 
             return Ok(summary);
+        }
+
+        [HttpGet("Station/Number{number}")]
+        public async Task<IActionResult> GetStationByNumber(int number)
+        {
+            var station = await _data.GetStationAsync(number);
+
+
+
+            return Ok(station);
         }
     }
 
