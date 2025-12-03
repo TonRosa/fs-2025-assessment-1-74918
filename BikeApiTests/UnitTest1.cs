@@ -22,7 +22,7 @@ public class StationEndpointTests : IClassFixture<WebApplicationFactory<Program>
         // Arrange ? nada
 
         // Act ? chama o endpoint real
-        var response = await _client.GetAsync("/api/v1/station");
+        var response = await _client.GetAsync("/api/V1/stations");
 
         // Assert ? valida HTTP 200
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
