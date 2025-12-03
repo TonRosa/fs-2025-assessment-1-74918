@@ -1,4 +1,5 @@
 ﻿using fs_2025_a_api_demo_002.Data;
+using fs_2025_a_api_demo_002.Models;
 using fs_2025_a_api_demo_002.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -70,9 +71,25 @@ namespace Api.Controllers
         {
             var station = await _data.GetStationAsync(number);
 
+                        return Ok(station);
+        }
+     
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Station station)
+        {
+                    var newStation = await _data.AddStationAsync(station);
+
+            return  Ok(newStation);
+
+        }
+        [HttpPut("{number}")]
+        public async Task<IActionResult> Put(int number, [FromBody] Station station)
+        {
+            var currentStation = await _data.UpdateStationAsync(station);
 
 
-            return Ok(station);
+
+            return Ok(currentStation);
         }
     }
 
