@@ -9,6 +9,7 @@ namespace fs_2025_a_api_demo_002.Services
 
     public class CosmosDataService : IDataService
     {
+        private readonly Container _container;
         private readonly CosmosBikeRepository _repo;
         private readonly IMemoryCache _cache;
         private readonly TimeSpan _cacheTtl = TimeSpan.FromMinutes(5);
@@ -18,6 +19,7 @@ namespace fs_2025_a_api_demo_002.Services
         {
             _repo = repo;
             _cache = cache;
+          
         }
 
         private void TrackKey(string key) => _cacheKeys.TryAdd(key, 0);
@@ -140,7 +142,16 @@ namespace fs_2025_a_api_demo_002.Services
         // Write operations are not supported by the sample Cosmos repository.
         public Task<Station> AddStationAsync(Station station)
         {
-            throw new NotSupportedException("AddStationAsync is not supported by CosmosDataService. Implement repository write methods to enable this.");
+            var _stations = new List<Station>();
+            var max = _stations.Count == 0 ? 0 : _stations.Max(s => s.Number);
+            if (station.Number == 0) station.Number = max + 1;
+            _stations.Add(station);
+
+            // invalidate query cache
+            InvalidateQueryCache();
+
+            return Task.FromResult(station);
+            //throw new NotSupportedException("AddStationAsync is not supported by CosmosDataService. Implement repository write methods to enable this.");
         }
 
         public Task<bool> UpdateStationAsync(Station station)
@@ -154,6 +165,7 @@ namespace fs_2025_a_api_demo_002.Services
             var bikes = (await _repo.QueryAsync(new BikeQuery(Page: 1, PageSize: 10000))).ToList();
             return bikes.Select(MapBikeToStation).ToList();
         }
+        
     }
 
 }

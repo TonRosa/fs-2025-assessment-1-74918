@@ -13,12 +13,19 @@ public class CosmosBikeRepository : IBikeRepository
 {
     private readonly Container _container;
 
-    public CosmosBikeRepository(CosmosClient client, Microsoft.Extensions.Configuration.IConfiguration config)
+     public CosmosBikeRepository(CosmosClient client, Microsoft.Extensions.Configuration.IConfiguration config)
     {
+
+        //var cosmosClient = new CosmosClient(config["CosmosDb:ConnectionString"]);
+        //var database = cosmosClient.GetDatabase(config["CosmosDb: Database"]);
+        //_container = database.GetContainer(config["CosmosDb: Container"]);
+
+
+
         var db = config["Cosmos:Database"] ?? "Dublin";
         var container = config["Cosmos:Container"] ?? "bikes";
         _container = client.GetContainer(db, container);
-        
+
     }
 
     public async Task<IEnumerable<Bike>> QueryAsync(BikeQuery query)
@@ -102,3 +109,4 @@ public class CosmosBikeRepository : IBikeRepository
         return response.Resource;
     }
 }
+

@@ -75,7 +75,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Station station)
+        public async Task<IActionResult> PostStationByStation([FromBody] Station station)
         {
             var newStation = await _data.AddStationAsync(station);
 
