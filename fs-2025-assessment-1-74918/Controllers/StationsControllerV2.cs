@@ -91,6 +91,23 @@ namespace Api.Controllers
 
             return Ok(currentStation);
         }
+
+        //[HttpDelete("Station/Number{number}")]
+        //public IActionResult DeleteStation()
+
+        //{
+        //    var context = new ApplicationDbContext();
+        //    int id = Station.Number;
+            
+        //    var station = context.Station.Find(id);
+        //    if (station == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    context.Clients.Remove(Station);
+        //    context.SaveChanges();
+        //    return Ok();
+        //}
     }
 
 }

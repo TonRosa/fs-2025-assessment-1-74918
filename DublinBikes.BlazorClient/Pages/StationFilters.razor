@@ -1,0 +1,21 @@
+﻿<input placeholder="Search"
+       @bind="search" />
+
+<select @bind="status">
+    <option value="">All</option>
+    <option>OPEN</option>
+    <option>CLOSED</option>
+</select>
+
+<button @onclick="Apply">Apply</button>
+
+@code {
+    string? search;
+    string? status;
+
+    [Parameter]
+    public EventCallback<(string?, string?)> OnChange { get; set; }
+
+    async Task Apply()
+        => await OnChange.InvokeAsync((search, status));
+}

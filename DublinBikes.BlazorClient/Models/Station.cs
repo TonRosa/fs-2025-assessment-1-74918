@@ -8,9 +8,9 @@
         public string Status { get; set; } = "";
         public int BikeStands { get; set; }
         public int AvailableBikes { get; set; }
-        public int AvailableBikeStands { get; set; }
+        public DateTime LastUpdate { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public DateTime LastUpdate { get; set; }
     }
+
 }

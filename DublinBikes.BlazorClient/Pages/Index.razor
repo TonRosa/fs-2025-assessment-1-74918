@@ -1,0 +1,61 @@
+﻿@page "/station" 
+@using DublinBikes.BlazorClient.Models
+@using static System.Net.WebRequestMethods
+@using System.Net.Http.Json
+
+
+
+<h1 class="text-center mb-3">List of Stations</h1>
+
+<a class=" bi bi-bicycle btn btn-primary mb-3" href="/Station/Create">New Station</a>
+
+@if (stations == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Bike Stands</th>
+                <th>Available Bikes</th>
+                <th>Last Update</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (DublinBikes.BlazorClient.Models.Station station in stations)
+            {
+                <tr>
+                    <td>@station.Number</td>
+                    <td>@station.Name</td>
+                    <td>@station.Address</td>
+                    <td>@station.Status</td>
+                    <td>@station.BikeStands</td>
+                    <td>@station.AvailableBikes</td>
+                    <td>@station.LastUpdate.ToShortDateString()</td>
+                    <td style="white-space:nowrap">
+                        <a class="btn btn-primary btn-sm" href="/Stations/Edit/@station.Number">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="/Stations/Delete/@station.Number">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody> 
+    </table>
+}
+@inject HttpClient Http
+@code {
+
+    private List<DublinBikes.BlazorClient.Models.Station>? stations;
+    protected override async Task OnInitializedAsync()
+    {
+        stations = await Http.GetFromJsonAsync<List<DublinBikes.BlazorClient.Models.Station>>("https://localhost:7259/api/V2/stations?page=1&pageSize=200");
+    }
+
+} 
