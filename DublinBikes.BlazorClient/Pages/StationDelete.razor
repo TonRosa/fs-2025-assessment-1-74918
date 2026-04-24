@@ -1,0 +1,24 @@
+﻿@page "/Stations/Delete/{Number:int}"
+
+
+<h1 class="mb-3">Delete Station</h1>
+<p>Are you sure you want to delete Station with Number @Number?</p>
+<button class="btn btn-danger" @onclick="DeleteStation">Delete</button>
+<a class="btn btn-secondary" href="Station">Cancel</a>
+
+
+
+@inject HttpClient http
+@inject NavigationManager navManager
+
+@code {
+    [Parameter]
+    public int Number { set; get; }
+
+    protected async Task DeleteStation()
+    {
+        var HttpResponseMessage = await http.DeleteAsync("https://localhost:7259/api/V2/stations/" + Number);
+        navManager.NavigateTo("/Station");
+    }
+
+}

@@ -68,5 +68,6 @@ namespace fs_2025_a_api_demo_002.Models
         {
             get => BikeStands > 0 ? (double)AvailableBikes / BikeStands : 0.0;
         }
+
     }
 }

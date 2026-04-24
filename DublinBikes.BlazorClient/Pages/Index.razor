@@ -1,8 +1,8 @@
-﻿@page "/station" 
+﻿@page "/Station" 
 @using DublinBikes.BlazorClient.Models
 @using static System.Net.WebRequestMethods
 @using System.Net.Http.Json
-
+@layout MainLayout
 
 
 <h1 class="text-center mb-3">List of Stations</h1>
@@ -39,7 +39,7 @@ else
                     <td>@station.Status</td>
                     <td>@station.BikeStands</td>
                     <td>@station.AvailableBikes</td>
-                    <td>@station.LastUpdate.ToShortDateString()</td>
+                    <td>@station.LastUpdateUtc.ToLocalTime().ToString("dd MMM yyyy")</td>
                     <td style="white-space:nowrap">
                         <a class="btn btn-primary btn-sm" href="/Stations/Edit/@station.Number">Edit</a>
                         <a class="btn btn-danger btn-sm" href="/Stations/Delete/@station.Number">Delete</a>
@@ -55,7 +55,7 @@ else
     private List<DublinBikes.BlazorClient.Models.Station>? stations;
     protected override async Task OnInitializedAsync()
     {
-        stations = await Http.GetFromJsonAsync<List<DublinBikes.BlazorClient.Models.Station>>("https://localhost:7259/api/V2/stations?page=1&pageSize=200");
+        stations = await Http.GetFromJsonAsync<List<DublinBikes.BlazorClient.Models.Station>>("https://localhost:7259/api/V1/stations?page=1&pageSize=200");
     }
 
 } 

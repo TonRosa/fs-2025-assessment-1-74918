@@ -1,7 +1,132 @@
-﻿@page "/stations/edit/{Number:int}"
-@inject StationsApiClient Api
+﻿@page "/Stations/edit/{Number:int}"
+@using DublinBikes.BlazorClient.Models
+@using System.Net.Http.Json
+@inject HttpClient http
 @inject NavigationManager Nav
-@using System.ComponentModel.DataAnnotations;
 
-<h1>Edit Station</h1>
+<div class="row">
+    <div class="col-lg-8">
+        <h1 class="mb-5">Edit Station</h1>
 
+        @if (_loading)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else if (_station == null)
+        {
+            <p class="text-danger">Station not found.</p>
+        }
+        else
+        {
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Station Number</label>
+                <div class="col-md-8">
+                    <input class="form-control-plaintext" value="@Number" readonly />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Station Name</label>
+                <div class="col-md-8">
+                    <input class="form-control" @bind="_station.Name" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Address</label>
+                <div class="col-md-8">
+                    <input class="form-control" @bind="_station.Address" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Bike Stands</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" @bind="_station.BikeStands" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Available Bikes</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" @bind="_station.AvailableBikes" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Available Stands</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" @bind="_station.AvailableBikeStands" />
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label">Status</label>
+                <div class="col-md-8">
+                    <select class="form-select" @bind="_station.Status">
+                        <option value="OPEN">OPEN</option>
+                        <option value="CLOSED">CLOSED</option>
+                    </select>
+                </div>
+            </div>
+
+            @if (_error != null)
+            {
+                <div class="alert alert-danger">@_error</div>
+            }
+
+            <div class="row">
+                <div class="offset-md-4 col-md-4 d-grid">
+                    <button class="btn btn-primary" @onclick="SaveStation">Save</button>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <a class="btn btn-outline-primary" href="/station">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Number { get; set; }
+
+    private Station? _station;
+    private bool _loading = true;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _station = await http.GetFromJsonAsync<Station>(
+                $"https://localhost:7259/api/V1/stations/Station/Number{Number}");
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task SaveStation()
+    {
+        if (_station == null) return;
+        try
+        {
+            var response = await http.PutAsJsonAsync(
+                $"https://localhost:7259/api/V1/stations/{Number}", _station);
+
+            if (response.IsSuccessStatusCode)
+                Nav.NavigateTo("/station");
+            else
+                _error = $"Error: {response.StatusCode}";
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+}

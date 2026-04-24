@@ -1,15 +1,14 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
+    <nav class="navbar navbar-dark px-4 d-flex align-items-center gap-4" style="background-color: #6f42c1; height: 60px;">
+        <a class="navbar-brand fw-bold text-white me-4" href="">DublinBikes</a>
+        <NavLink class="nav-link text-white fw-semibold" href="" Match="NavLinkMatch.All">Home</NavLink>
+        <NavLink class="nav-link text-white fw-semibold" href="station">Stations</NavLink>
+        <NavLink class="nav-link text-white fw-semibold" href="Station/Create">New Station</NavLink>
+    </nav>
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+        <article class="content px-4 py-4">
             @Body
         </article>
     </main>

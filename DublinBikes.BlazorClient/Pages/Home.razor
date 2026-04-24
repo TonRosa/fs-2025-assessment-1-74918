@@ -1,7 +1,129 @@
 ﻿@page "/"
+@using DublinBikes.BlazorClient.Models
+@using DublinBikes.Blazor.Services
+@inject StationsApiClient Api
 
-<PageTitle>Home</PageTitle>
+<PageTitle>DublinBikes – Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="min-h-screen bg-gray-100">
 
-Welcome to your new app.
+    <!-- HERO -->
+    <section class="bg-blue-700 text-white text-center py-16 px-6">
+        <div class="text-5xl mb-4">🚲</div>
+        <h1 class="text-4xl font-bold mb-2">DublinBikes</h1>
+        <p class="text-blue-200 text-lg mb-6">Real-time station availability across Dublin</p>
+        <a href="/stations" class="bg-white text-blue-700 font-bold px-6 py-3 rounded-full shadow hover:bg-blue-50 transition">
+            Browse Stations →
+        </a>
+    </section>
+
+    <!-- STATS -->
+    @if (_loading)
+    {
+        <div class="text-center py-12 text-gray-500">
+            <p class="text-lg">Loading stations…</p>
+        </div>
+    }
+    else if (_error != null)
+    {
+        <div class="max-w-xl mx-auto mt-8 bg-red-100 text-red-700 border border-red-300 rounded-lg p-4 text-center">
+            ⚠️ Could not load station data: @_error
+        </div>
+    }
+    else
+    {
+        <section class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-10">
+            <div class="bg-white rounded-xl shadow p-5 text-center">
+                <div class="text-3xl font-bold text-blue-600">@_totalStations</div>
+                <div class="text-gray-500 text-sm mt-1">Total Stations</div>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5 text-center">
+                <div class="text-3xl font-bold text-green-600">@_totalBikes</div>
+                <div class="text-gray-500 text-sm mt-1">Bikes Available</div>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5 text-center">
+                <div class="text-3xl font-bold text-emerald-600">@_openStations</div>
+                <div class="text-gray-500 text-sm mt-1">Open Stations</div>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5 text-center">
+                <div class="text-3xl font-bold text-red-500">@_closedStations</div>
+                <div class="text-gray-500 text-sm mt-1">Closed Stations</div>
+            </div>
+        </section>
+
+        <section class="max-w-4xl mx-auto px-6 pb-16">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Recent Stations</h2>
+                <a href="/stations" class="text-blue-600 text-sm font-semibold hover:underline">View all →</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                @foreach (var s in _recentStations)
+                {
+                    <a href="/stations" class="bg-white rounded-xl shadow p-4 border border-gray-100 hover:border-blue-400 hover:shadow-md transition block">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="font-semibold text-gray-800 text-sm leading-tight">@s.Name</span>
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full @(s.Status == "OPEN" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")">
+                                @s.Status
+                            </span>
+                        </div>
+                        <p class="text-gray-400 text-xs mb-3">@s.Address</p>
+                        <div class="flex justify-between text-sm font-semibold text-gray-700 mb-2">
+                            <span>🚲 @s.AvailableBikes bikes</span>
+                            <span class="text-gray-400">/ @s.BikeStands stands</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"
+                             role="progressbar"
+                             aria-valuenow="@((int)(s.Occupancy * 100))"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             aria-label="@s.AvailableBikes of @s.BikeStands bikes available">
+                            <div class="h-2 rounded-full @OccupancyColor(s)"
+                                 style="width: @((s.Occupancy * 100).ToString("F0"))%">
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </section>
+    }
+
+</div>
+
+@code {
+    private List<Station> _recentStations = new();
+    private bool _loading = true;
+    private string? _error;
+
+    private int _totalStations;
+    private int _totalBikes;
+    private int _openStations;
+    private int _closedStations;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var all = await Api.GetStationsAsync(pageSize: 100);
+            _totalStations = all.Count;
+            _totalBikes = all.Sum(s => s.AvailableBikes);
+            _openStations = all.Count(s => s.Status == "OPEN");
+            _closedStations = all.Count(s => s.Status == "CLOSED");
+            _recentStations = all.Take(6).ToList();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private string OccupancyColor(Station s) => s.Occupancy switch
+    {
+        >= 0.7 => "bg-green-500",
+        >= 0.3 => "bg-yellow-400",
+        _ => "bg-red-400"
+    };
+}

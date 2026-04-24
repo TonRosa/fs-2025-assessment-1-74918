@@ -98,7 +98,7 @@ namespace Api.Controllers
         //{
         //    var context = new ApplicationDbContext();
         //    int id = Station.Number;
-            
+
         //    var station = context.Station.Find(id);
         //    if (station == null)
         //    {
